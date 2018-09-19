@@ -1,32 +1,59 @@
 #include <iostream>
+#include <stack>
 
 namespace rdtree {
+
+using namespace std;
+
 
 enum color {
     black = 0,
     red = 1,
 };
 
-template <class T>
-struct node {
-    struct node *left; 
-    struct node *right;
+
+template <typename T>
+class node {
+public:
+    node(){ l = nullptr, r = nullptr, cl = black; }
+    node(T a): val(a) { l = nullptr, r = nullptr, cl = black; }
+
+    node<T>* left() { return l; }
+    node<T>* right() { return r; }
+
+    void set_left(node* ptr) { l = ptr; }
+    void set_right(node* ptr) { r = ptr; }
+
+    ~node() { 
+        if ( l ) l -> ~node(); 
+        if ( r ) r -> ~node(); 
+        delete l;
+        delete r;
+        l = r = nullptr;
+        ~T();
+    }
+
+private:
+    node<T>* l; 
+    node<T>* r;
     color cl;
-    T a;
-    node() {left = nullptr, right=nullptr, cl=black;}
+    T val;
 };
 
-template <class T>
+
+template <typename T>
 class rdtree {
 public:
-    rdtree() {root = nullptr;}
+    rdtree() { root = nullptr; }
     ~rdtree();
 private:
     node<T> * root;
 };
 
+
 template <class T>
 rdtree<T>::~rdtree(){
+    if ( root ) root -> ~node();
 }
 
 
