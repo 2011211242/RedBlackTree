@@ -1,3 +1,6 @@
+#ifndef _RBTREE_
+#define _RBTREE_
+
 #include <iostream>
 #include <stack>
 
@@ -58,3 +61,5 @@ rdtree<T>::~rdtree(){
 
 
 };
+
+#endif
