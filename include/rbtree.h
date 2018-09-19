@@ -24,8 +24,8 @@ public:
     node<T>* left() { return l; }
     node<T>* right() { return r; }
 
-    void set_left(node* ptr) { l = ptr; }
-    void set_right(node* ptr) { r = ptr; }
+    void set_left(node<T>* ptr) { l = ptr; }
+    void set_right(node<T>* ptr) { r = ptr; }
 
     ~node() { 
         if ( l ) l -> ~node(); 
@@ -33,7 +33,7 @@ public:
         delete l;
         delete r;
         l = r = nullptr;
-        ~T();
+        val.~T();
     }
 
 private:
@@ -57,6 +57,7 @@ private:
 template <class T>
 rdtree<T>::~rdtree(){
     if ( root ) root -> ~node();
+    root = nullptr;
 }
 
 
