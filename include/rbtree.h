@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stack>
 
-namespace rdtree {
+namespace tree {
 using namespace std;
 
 
@@ -41,9 +41,9 @@ private:
 
 
 template <typename T>
-class rdtree {
+class rbtree {
 public:
-    rdtree() { 
+    rbtree() { 
         nil = new node<T>; 
         nil -> set_left(nil);
         nil -> set_right(nil);
@@ -51,7 +51,7 @@ public:
         root = nil;
     }
 
-    ~rdtree();
+    ~rbtree();
     void add(const T &val);
     //node<T>* root() { return root; }
 
@@ -70,7 +70,7 @@ private:
 
 
 template <typename T>
-rdtree<T>::~rdtree() {
+rbtree<T>::~rbtree() {
     stack<node<T> *> stk;
     stk.push(root);
 
@@ -97,7 +97,7 @@ rdtree<T>::~rdtree() {
 
 
 template <typename T>
-void rdtree<T>::add(const T &val) {
+void rbtree<T>::add(const T &val) {
     node<T>* parent = nil;
     node<T>* ptr = root;
 
@@ -126,7 +126,7 @@ void rdtree<T>::add(const T &val) {
 
 
 template <typename T>
-void rdtree<T>::insert_fixup(node<T>* x) {
+void rbtree<T>::insert_fixup(node<T>* x) {
     while (x -> parent() -> color() == RED) {
         if ( x -> parent() == x -> parent() -> parent() -> left()) {
             node <T> * y = x -> parent() -> parent() -> right();
@@ -170,7 +170,7 @@ void rdtree<T>::insert_fixup(node<T>* x) {
 
 
 template <typename T>
-void rdtree<T>::left_rotate(node<T>* const x) {
+void rbtree<T>::left_rotate(node<T>* const x) {
     node<T> * const right = x -> right();
     if( x == root ) {
         root = right;
@@ -196,7 +196,7 @@ void rdtree<T>::left_rotate(node<T>* const x) {
 
 
 template <typename T>
-void rdtree<T>::right_rotate(node<T>* const x) {
+void rbtree<T>::right_rotate(node<T>* const x) {
     node<T> * const left = x -> left();
     if (x == root) {
         root = left;
@@ -221,7 +221,7 @@ void rdtree<T>::right_rotate(node<T>* const x) {
 }
 
 template <typename T>
-bool rdtree<T>:: test_bh() {
+bool rbtree<T>:: test_bh() {
     int bh = 0;
     stack<pair<node<T> *, int>> stk;
 
@@ -245,10 +245,8 @@ bool rdtree<T>:: test_bh() {
     return true;
 }
 
-
-
 template <typename T>
-void rdtree<T>::test() {
+void rbtree<T>::test() {
     add('w');
 
     add('u');
