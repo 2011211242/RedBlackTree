@@ -18,6 +18,7 @@ class node {
 public:
     node(){ l = nullptr, r = nullptr, cl = BLACK; }
     node(const T& a): val(a) { l = nullptr, r = nullptr, cl = BLACK; }
+    node(const T&& a): val(a) { l = nullptr, r = nullptr, cl = BLACK; }
 
     node<T>* left() { return l; }
     node<T>* right() { return r; }
@@ -41,7 +42,7 @@ private:
 template <typename T>
 class rdtree {
 public:
-    rdtree() { 
+    rdtree<T>() { 
         nil = new node<T>; 
         nil -> set_left(nil);
         nil -> set_right(nil);
@@ -49,8 +50,11 @@ public:
         root = nil;
     }
 
-    ~rdtree();
+    ~rdtree<T>();
     void add(const T &val);
+    //node<T>* root() { return root; }
+
+    void test();
 
 private:
     void insert_fixup(node<T>* const x);
@@ -70,7 +74,7 @@ rdtree<T>::~rdtree() {
     while(!stk.empty()) {
         node <T> * ptr = stk.top();
         stk.pop();
-        while ( ptr ) {
+        while ( ptr != nil ) {
             node <T> * left = ptr -> left();
             node <T> * right = ptr -> right();
 
@@ -79,6 +83,7 @@ rdtree<T>::~rdtree() {
 
             ptr -> set_left(nullptr);
             ptr -> set_right(nullptr);
+
             delete ptr;
             ptr = left;
         }
@@ -97,13 +102,13 @@ void rdtree<T>::add(const T &val) {
 
     while( ptr != nil ) {
         parent = ptr;
-        if ( val < ptr -> val) ptr = ptr -> left();
+        if ( val < ptr -> value()) ptr = ptr -> left();
         else ptr = ptr -> right();
     }
 
     node<T>* z = new node<T>( val );
 
-    if (ptr == nil) 
+    if (root == nil) 
         root = z;
     else {
         if ( val < parent -> value() ) parent -> set_left(z);
@@ -115,8 +120,7 @@ void rdtree<T>::add(const T &val) {
     z -> set_right(nil);
     z -> set_color(RED);
 
-    insert_fixup();
-
+    insert_fixup(z);
 }
 
 
@@ -181,6 +185,15 @@ void rdtree<T>::right_rotate(node<T>* const x) {
 }
 
 
+template <typename T>
+void rdtree<T>::test() {
+    add('w');
+    add('v');
+    add('y');
+    add('x');
+    add('z');
+    add('u');
+}
 
 
 };

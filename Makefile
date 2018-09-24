@@ -54,4 +54,4 @@ $(RDTREE): $(BASE_OBJ) $(MAIN_OBJ)
 		${CXX} ${CXXFLAGS}  $^ ${LFLAGS} -o $@
 
 make clean:
-		rm -rf $(BIN_DIR) $(LIB_DIR) $(OBJS)
+		rm -rf $(BIN_DIR) $(LIB_DIR) $(OBJS) 

@@ -2,15 +2,10 @@
 #include <vector>
 #include <iostream>
 using namespace std;
+//using namespace rdtree;
 
 int main() {
-    rdtree::node<int> a;
-    rdtree::node<int> b(1);
-    rdtree::rdtree<int> tree;
+    rdtree::rdtree<char> tree;
 
-    
-    vector<int> vec;
-    vec.~vector<int>();
-
-    cout << vec.size() << endl;
+    tree.test();
 }
