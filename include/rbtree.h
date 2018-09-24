@@ -62,6 +62,8 @@ private:
     void left_rotate(node<T>* const x);
     void right_rotate(node<T>* const x);
 
+    bool judge();
+
     node<T> * root;
     node<T> * nil;
 };
@@ -70,7 +72,7 @@ private:
 template <typename T>
 rdtree<T>::~rdtree() {
     stack<node<T> *> stk;
-    if (root != nil) stk.push(root);
+    stk.push(root);
 
     while(!stk.empty()) {
         node <T> * ptr = stk.top();
@@ -79,9 +81,7 @@ rdtree<T>::~rdtree() {
             node <T> * left = ptr -> left();
             node <T> * right = ptr -> right();
 
-            if (right != nil)
-                stk.push(right);
-
+            stk.push(right);
             ptr -> set_left(nullptr);
             ptr -> set_right(nullptr);
 
@@ -220,16 +220,43 @@ void rdtree<T>::right_rotate(node<T>* const x) {
     left -> set_right(x);
 }
 
+template <typename T>
+bool rdtree<T>:: judge() {
+    int bh = 0;
+    stack<pair<node<T> *, int>> stk;
+
+    int h = 0;
+    if (root != nil) stk.push({root, h});
+
+    while (!stk.empty()) {
+        node<T> * ptr = stk.top().first();
+        h = stk.top().second();        
+        stk.pop();
+
+        while ( ptr != nil ) {
+            h += ( ptr -> color() == BLACK );
+            stk.push({ ptr -> right(), h });
+            ptr = ptr -> left();
+        }
+
+        if (bh == 0) bh = h;
+        else if (bh != h) return false;
+    }
+    return true;
+}
+
+
 
 template <typename T>
 void rdtree<T>::test() {
     add('w');
-    //add('u');
+
+    add('u');
     add('y');
-    //add('x');
+    add('x');
     add('z');
-    //add('v');
-    //add('a');
+    add('v');
+    add('a');
 
     left_rotate(root);
     right_rotate(root);
