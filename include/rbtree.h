@@ -239,7 +239,6 @@ bool rdtree<T>:: test_bh() {
             ptr = ptr -> left();
         }
 
-        cout << "bh: " << bh << endl;
         if (bh == 0) bh = h;
         else if (bh != h) return false;
     }
