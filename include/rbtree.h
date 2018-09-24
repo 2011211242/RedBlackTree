@@ -56,13 +56,13 @@ public:
     //node<T>* root() { return root; }
 
     void test();
+    bool test_bh();
 
 private:
     void insert_fixup(node<T>* x);
     void left_rotate(node<T>* const x);
     void right_rotate(node<T>* const x);
 
-    bool judge();
 
     node<T> * root;
     node<T> * nil;
@@ -221,7 +221,7 @@ void rdtree<T>::right_rotate(node<T>* const x) {
 }
 
 template <typename T>
-bool rdtree<T>:: judge() {
+bool rdtree<T>:: test_bh() {
     int bh = 0;
     stack<pair<node<T> *, int>> stk;
 
@@ -229,8 +229,8 @@ bool rdtree<T>:: judge() {
     if (root != nil) stk.push({root, h});
 
     while (!stk.empty()) {
-        node<T> * ptr = stk.top().first();
-        h = stk.top().second();        
+        node<T> * ptr = stk.top().first;
+        h = stk.top().second;
         stk.pop();
 
         while ( ptr != nil ) {
@@ -239,6 +239,7 @@ bool rdtree<T>:: judge() {
             ptr = ptr -> left();
         }
 
+        cout << "bh: " << bh << endl;
         if (bh == 0) bh = h;
         else if (bh != h) return false;
     }
