@@ -7,7 +7,7 @@ namespace rdtree {
 using namespace std;
 
 
-enum color {
+enum COLOR {
     BLACK = 0,
     RED = 1,
 };
@@ -23,18 +23,19 @@ public:
     node<T>* left() { return l; }
     node<T>* right() { return r; }
     node<T>* parent() { return p; }
+    COLOR color() { return cl; }
 
     void set_left(node<T>* ptr) { l = ptr; }
     void set_right(node<T>* ptr) { r = ptr; }
     void set_parent(node<T>* ptr) { p = ptr; }
-    void set_color(const color c) { cl = c; }
+    void set_color(const COLOR c) { cl = c; }
     void set_value(const T& val) { this -> val = val; }
     T value(){ return val; }
 private:
     node<T>* l; 
     node<T>* r;
     node<T>* p;
-    color cl;
+    COLOR cl;
     T val;
 };
 
@@ -57,7 +58,7 @@ public:
     void test();
 
 private:
-    void insert_fixup(node<T>* const x);
+    void insert_fixup(node<T>* x);
     void left_rotate(node<T>* const x);
     void right_rotate(node<T>* const x);
 
@@ -125,8 +126,46 @@ void rdtree<T>::add(const T &val) {
 
 
 template <typename T>
-void rdtree<T>::insert_fixup(node<T>* const x) {
-    //if ()
+void rdtree<T>::insert_fixup(node<T>* x) {
+    while (x -> parent() -> color() == RED) {
+        if ( x -> parent() == x -> parent() -> parent() -> left()) {
+            node <T> * y = x -> parent() -> parent() -> right();
+            if (y -> color() == RED) {
+                x -> parent() -> set_color(BLACK);
+                y -> set_color(BLACK);
+                x -> parent() -> parent() -> set_color(RED);
+                x = x -> parent() -> parent();
+            }
+            else {
+                if (x == x -> parent() -> right()) {
+                    x = x -> parent();
+                    left_rotate(x);
+                }
+                x -> parent() -> set_color(BLACK);
+                x -> parent() -> parent() -> set_color(RED);
+                right_rotate(x -> parent() -> parent());
+            }
+        }
+        else {
+            node <T> * y = x -> parent() -> parent() -> left();
+            if (y -> color() == RED) {
+                x -> parent() -> set_color(BLACK);
+                y -> set_color(BLACK);
+                x -> parent() -> parent() -> set_color(RED);
+                x = x -> parent() -> parent();
+            }
+            else {
+                if (x == x -> parent() -> left()) {
+                    x = x -> parent();
+                    right_rotate(x);
+                }
+                x -> parent() -> set_color(BLACK);
+                x -> parent() -> parent() -> set_color(RED);
+                left_rotate(x -> parent() -> parent());
+            }
+        }
+    }
+    root -> set_color(BLACK);
 }
 
 
