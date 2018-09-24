@@ -16,7 +16,7 @@ enum color {
 template <typename T>
 class node {
 public:
-    node(){ l = nullptr, r = nullptr, cl = BLACK; }
+    node() { l = nullptr, r = nullptr, cl = BLACK; }
     node(const T& a): val(a) { l = nullptr, r = nullptr, cl = BLACK; }
     node(const T&& a): val(a) { l = nullptr, r = nullptr, cl = BLACK; }
 
@@ -42,7 +42,7 @@ private:
 template <typename T>
 class rdtree {
 public:
-    rdtree<T>() { 
+    rdtree() { 
         nil = new node<T>; 
         nil -> set_left(nil);
         nil -> set_right(nil);
@@ -50,7 +50,7 @@ public:
         root = nil;
     }
 
-    ~rdtree<T>();
+    ~rdtree();
     void add(const T &val);
     //node<T>* root() { return root; }
 
@@ -133,7 +133,6 @@ void rdtree<T>::insert_fixup(node<T>* const x) {
 template <typename T>
 void rdtree<T>::left_rotate(node<T>* const x) {
     node<T> * const right = x -> right();
-
     if( x == root ) {
         root = right;
     }
@@ -147,14 +146,12 @@ void rdtree<T>::left_rotate(node<T>* const x) {
     }
     right -> set_parent(x -> parent());
 
-
     x -> set_parent(right);
     x -> set_right(right -> left());
 
     if (right -> left() != nil) {
         right -> left() -> set_parent(x);
     }
-
     right -> set_left(x);
 }
 
@@ -173,7 +170,7 @@ void rdtree<T>::right_rotate(node<T>* const x) {
             x -> parent() -> set_right(left);
         }
     }
-    left -> set_parent(x -> parent);
+    left -> set_parent(x -> parent());
 
     x -> set_parent(left);
     x -> set_left(left -> right());
@@ -188,11 +185,18 @@ void rdtree<T>::right_rotate(node<T>* const x) {
 template <typename T>
 void rdtree<T>::test() {
     add('w');
-    add('v');
+    //add('u');
     add('y');
-    add('x');
+    //add('x');
     add('z');
-    add('u');
+    //add('v');
+    //add('a');
+
+    left_rotate(root);
+    right_rotate(root);
+    cout << root -> value() << endl;
+    cout << root -> left() -> value() << endl;
+    cout << root -> right() -> value() << endl;
 }
 
 
