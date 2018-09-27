@@ -11,12 +11,14 @@ int main() {
     srand(time(nullptr));
 
     rbtree<int> tree;
+    /*
     for(int i = 0; i < SIZE; i ++) {
         tree.add(rand() % (10 * SIZE));
         if ( false == tree.test_bh() ) {
             cout << "bh wrong" << endl;
         }
     }
+    */
 
-    //tree.test();
+    tree.test();
 }

@@ -247,17 +247,19 @@ bool rbtree<T>:: test_bh() {
 
 template <typename T>
 void rbtree<T>::test() {
-    add('w');
+    //{0,-1,1,2,-3,-3};
+    add(0);
+    add(0);
 
-    add('u');
-    add('y');
-    add('x');
-    add('z');
-    add('v');
-    add('a');
+    add(-1);
+    add(0);
+    add(2);
+    add(-1);
+    //add(-4);
+    //add('a');
 
-    left_rotate(root);
-    right_rotate(root);
+    //left_rotate(root);
+    //right_rotate(root);
     cout << root -> value() << endl;
     cout << root -> left() -> value() << endl;
     cout << root -> right() -> value() << endl;
