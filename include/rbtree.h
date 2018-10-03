@@ -53,16 +53,14 @@ public:
 
     ~rbtree();
     void add(const T &val);
-    //node<T>* root() { return root; }
-
     void test();
     bool test_bh();
+    bool search(const T &val);
 
 private:
     void insert_fixup(node<T>* x);
     void left_rotate(node<T>* const x);
     void right_rotate(node<T>* const x);
-
 
     node<T> * root;
     node<T> * nil;
@@ -264,7 +262,6 @@ void rbtree<T>::test() {
     cout << root -> left() -> value() << endl;
     cout << root -> right() -> value() << endl;
 }
-
 
 };
 
