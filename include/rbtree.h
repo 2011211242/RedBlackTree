@@ -20,17 +20,17 @@ public:
     node(const T& a): val(a) { l = nullptr, r = nullptr, cl = BLACK; }
     node(const T&& a): val(a) { l = nullptr, r = nullptr, cl = BLACK; }
 
-    node<T>* left() { return l; }
-    node<T>* right() { return r; }
-    node<T>* parent() { return p; }
-    COLOR color() { return cl; }
+    node<T>* left() const { return l; }
+    node<T>* right() const { return r; }
+    node<T>* parent() const { return p; }
+    COLOR color() const { return cl; }
 
     void set_left(node<T>* ptr) { l = ptr; }
     void set_right(node<T>* ptr) { r = ptr; }
     void set_parent(node<T>* ptr) { p = ptr; }
     void set_color(const COLOR c) { cl = c; }
     void set_value(const T& val) { this -> val = val; }
-    T value(){ return val; }
+    T value() const { return val; }
 private:
     node<T>* l; 
     node<T>* r;
@@ -56,11 +56,14 @@ public:
     void test();
     bool test_bh();
     bool search(const T &val);
+    void remove(const T &val);
 
 private:
-    void insert_fixup(node<T>* x);
-    void left_rotate(node<T>* const x);
-    void right_rotate(node<T>* const x);
+    void insert_fixup(node<T>* const z);
+    void delete_fixup(node<T>* const z);
+    void left_rotate(node<T>* const z);
+    void right_rotate(node<T>* const z);
+    void remove(node<T>* const z);
 
     node<T> * root;
     node<T> * nil;
@@ -246,9 +249,6 @@ bool rbtree<T>:: test_bh() {
 template <typename T>
 void rbtree<T>::test() {
     //{0,-1,1,2,-3,-3};
-    add(0);
-    add(0);
-
     add(-1);
     add(0);
     add(2);
@@ -261,6 +261,63 @@ void rbtree<T>::test() {
     cout << root -> value() << endl;
     cout << root -> left() -> value() << endl;
     cout << root -> right() -> value() << endl;
+    remove(root);
+    remove(root -> value());
+}
+
+template <typename T>
+void rbtree<T>::remove(const T& val){
+}
+ 
+template <typename T>
+void rbtree<T>::remove(node<T>* const z){
+    if (z == nil) return;
+    node<T>* y = nullptr;
+
+    if(z -> left() != nil || z -> right() != nil) {
+        y = z;
+    }
+    else {
+        node<T>* ptr = z -> right();
+        while(ptr -> left() != nil) {
+            ptr = ptr -> left();
+        }
+        y = ptr;
+    }
+
+    node<T>* x = nullptr;
+    if(y -> left() != nil) {
+        x = y -> left();
+    }
+    else {
+        x = y -> right();
+    }
+
+    x -> set_parent(y -> parent());
+    if (y -> parent() == nil) {
+       root = x; 
+    }
+    else if (y == y -> parent() -> left()) {
+        y -> parent() -> set_left(x);
+    }
+    else{
+        y -> parent() -> set_right(x);
+    }
+
+    if (y != z) {
+        z -> set_value(y -> value());
+    }
+
+    if( y -> color() == BLACK) {
+        delete_fixup(x);
+    }
+
+    delete z;
+}
+
+template <typename T>
+void rbtree<T>::delete_fixup(node<T>* const z){
+
 }
 
 };

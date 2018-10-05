@@ -7,5 +7,6 @@ using namespace std;
 using namespace tree;
 
 int main() {
-    srand(time(nullptr));
+    rbtree<int> tree;
+    tree.test();
 }
