@@ -6,12 +6,10 @@
 namespace tree {
 using namespace std;
 
-
 enum COLOR {
     BLACK = 0,
     RED = 1,
 };
-
 
 template <typename T>
 class node {
@@ -65,6 +63,7 @@ private:
     void right_rotate(node<T>* const z);
     void remove(node<T>* const z);
     void transplant(node<T>* const u, node<T>* const v);
+    void del(node<T> * const z);
 
     node<T> * root;
     node<T> * nil;
@@ -321,6 +320,54 @@ void rbtree<T>::transplant(node<T>* const u, node<T>* const v){
     if(v -> parent() == nil) {
         root = v;
     }
+    else if (u == u -> parent() -> left()) {
+        u -> parent() -> set_left(v);
+    }
+    else {
+        u -> parent() -> set_right(v);
+    }
+    v.p = u.p;
+}
+
+
+template <typename T>
+void rbtree<T>::del(node<T> * const z) {
+    node<T>* x = nullptr, y = z;
+    COLOR y_origin_color = y -> color();
+
+    if (z -> left() == nil) {
+        x = z -> right();
+        transplant(z, z -> right());
+    }
+    else if (z -> right() == nil) {
+        x = z -> left();
+        transplant(z, z -> left());
+    }
+    else {
+        node<T>* ptr = z -> right();
+        while(ptr -> left() != nil) {
+            ptr = ptr -> left();
+        }
+        y = ptr;
+
+        y_origin_color = y -> color();
+        x = y -> right();
+
+        if (y -> parent() == z) {
+            x -> set_parent(y);
+        }
+        else {
+            transplant(y, y -> right());
+            y -> set_right(z -> right());
+            y -> right() -> set_parent(y);
+        }
+        transplant(z, y);
+        y -> set_left(z -> left());
+        y -> left() -> sert_parent(y);
+        y -> color() = z -> color();
+    }
+    if (y_origin_color == BLACK)
+        delete_fixup();
 }
 
 template <typename T>
