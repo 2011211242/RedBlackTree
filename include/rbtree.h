@@ -64,6 +64,7 @@ private:
     void left_rotate(node<T>* const z);
     void right_rotate(node<T>* const z);
     void remove(node<T>* const z);
+    void transplant(node<T>* const u, node<T>* const v);
 
     node<T> * root;
     node<T> * nil;
@@ -316,8 +317,14 @@ void rbtree<T>::remove(node<T>* const z){
 }
 
 template <typename T>
-void rbtree<T>::delete_fixup(node<T>* const z){
+void rbtree<T>::transplant(node<T>* const u, node<T>* const v){
+    if(v -> parent() == nil) {
+        root = v;
+    }
+}
 
+template <typename T>
+void rbtree<T>::delete_fixup(node<T>* const z){
 }
 
 };
